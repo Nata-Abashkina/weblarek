@@ -1,16 +1,16 @@
 import './scss/styles.scss';
 
+import { API_URL } from './utils/constants.ts';
+
 import { apiProducts } from './utils/data.ts';
 
 import { IApi } from './types/index.ts';
 import { Api } from './components/base/Api.ts';
-import { IProduct } from './types/index.ts';
-import { IProductListResponse } from './types/index.ts';
-import { IOrderConfirmation } from './types/index.ts';
 
 import { Catalog } from './components/models/Catalog.ts';
 import { Basket } from './components/models/Basket.ts';
 import { Buyer } from './components/models/Buyer.ts';
+import { ApiClient } from './components/sevices/ApiClient.ts';
 
 const productsModel = new Catalog([]);
 productsModel.setProducts(apiProducts.items);
@@ -46,45 +46,14 @@ console.log('данные после очистки', buyerModel.getBuyer());
 
 const buyerModel2 = new Buyer('', 'test@example.com', '', 'г. Москва, ул. Ленина, д. 1');
 console.log('получение всех данных покупателя', buyerModel2.getBuyer());
-console.log('валидация данных', buyerModel2.validPayAndEmail('', 'test@example.com'));
-console.log('валидация данных', buyerModel2.validPhoneAndAddr('', 'г. Москва, ул. Ленина, д. 1'));
+console.log('валидация данных', buyerModel2.validBuyer());
 
-class ApiClient {
-  private api: IApi;
-
-  constructor(api: IApi) {
-    this.api = api;
-  }
-
-  async getProducts(): Promise<IProduct[]> {
-    const result = await this.api.get<IProductListResponse>('/product/');
-    return result.items as IProduct[];
-  }
-
-  async postOrder(basket: Basket, buyer: Buyer): Promise<IOrderConfirmation> {
-    const buyerData = buyer.getBuyer();
-    const items = basket.getProducts();
-    let item = items.map(item => item.id);
-    const total = basket.getPriceBasket();
-    const result = {
-      payment: buyerData.payment,
-      email: buyerData.email,
-      phone: buyerData.phone,
-      address: buyerData.address,
-      total: total,
-      items: item
-    }
-
-    return await this.api.post<IOrderConfirmation>('/order/', result);
-  }
-}
-
-const api: IApi = new Api(import.meta.env.VITE_API_ORIGIN);
+const api: IApi = new Api(API_URL);
 const apiClient = new ApiClient(api);
 
 try {
   const products = await apiClient.getProducts();
-  productsModel.setProducts(products);
+  productsModel.setProducts(products.items);
   console.log('КАТАЛОГ ТОВАРОВ:', productsModel.getProducts());
 } catch (error) {
   console.error('Ошибка загрузки каталога:', error);

@@ -15,6 +15,12 @@ export interface IOrderConfirmation {
   total: number
 }
 
+export interface IOrder {
+  buyer: IBuyer,
+  total: number,
+  items: string[]
+}
+
 export interface IProduct {
   id: string;
   description: string;
@@ -24,7 +30,7 @@ export interface IProduct {
   price: number | null;
 }
 
-export type TPayment = 'online' | 'cash';
+export type TPayment = 'online' | 'cash' | '';
 
 export interface IBuyer {
   payment: TPayment;

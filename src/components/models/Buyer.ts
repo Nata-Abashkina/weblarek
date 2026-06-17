@@ -1,11 +1,11 @@
 import { IBuyer } from "../../types";
 import { TPayment } from "../../types";
 
-export class Buyer implements IBuyer {
-  payment: TPayment;
-  email: string;
-  phone: string;
-  address: string;
+export class Buyer {
+  private payment: TPayment;
+  private email: string;
+  private phone: string;
+  private address: string;
 
   constructor(payment: TPayment, email: string, phone: string, address: string) {
     this.payment = payment;
@@ -15,14 +15,14 @@ export class Buyer implements IBuyer {
   }
 
   //сохранение данных в модели
-  updBuyer(buyer: Partial<IBuyer>): IBuyer {
+  updBuyer(buyer: Partial<IBuyer>): Buyer {
     (Object.keys(buyer) as Array<keyof IBuyer>).forEach(key  => {
       if (buyer[key] != undefined) {
         if (key === 'payment') {
           if (buyer[key] === 'online' || buyer[key] === 'cash') {
             this[key] = buyer[key] as TPayment;
           } else {
-            this.payment = 'online';
+            this.payment = '';
           }
         } else {
           this[key] = buyer[key];
@@ -46,34 +46,29 @@ export class Buyer implements IBuyer {
 
   //очистка данных покупателя
   delBuyer(): void {
-    this.payment = 'online';
+    this.payment = '';
     this.email = '';
     this.phone = '';
     this.address = '';
   }
 
   //валидация данных
-  validPayAndEmail(payment: TPayment, email: string): {payment?: string; email?: string} {
-    let err: {payment?: string; email?: string} = {};
+  validBuyer(): {payment?: string; email?: string, phone?: string, address?: string} {
+      let err: {payment?: string; email?: string,phone?: string, address?: string} = {};
 
-    if (payment != 'online' && payment != 'cash') {
+    if (this.payment != 'online' && this.payment != 'cash') {
       err.payment = 'Не выбран вид оплаты';
     }
 
-    if (email === '') {
+    if (this.email === '') {
       err.email = 'Укажите емэйл';
     }
-    return err;
-  }
 
-  validPhoneAndAddr(phone: string, address: string): {phone?: string, address?: string} {
-    let err: {phone?: string, address?: string} = {};
-
-    if (phone === '') {
+    if (this.phone === '') {
       err.phone = 'Введите номер телефона';
     }
 
-    if (address === '') {
+    if (this.address === '') {
       err.address = 'Укажите адрес';
     }
     return err;

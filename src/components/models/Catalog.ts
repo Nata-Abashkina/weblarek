@@ -11,7 +11,6 @@ export class Catalog{
   //сохранение массива товаров полученного в параметрах метода
   setProducts(products: IProduct[]): void {
     this.products = [...products];
-    this.product = null;
   }
 
   //получение массива товаров из модели

@@ -163,10 +163,10 @@ Presenter - презентер содержит основную логику п
 `constructor(payment: TPayment, email: string, phone: string, address: string)` - хранит следующие данные: вид оплаты; адреc; телефон; email.
 
 Поля класса:
-`payment: TPayment` - вид оплаты, тип оплаты `TPayment` может принимать значения `online` и `cash`.
-`email: string` - email.
-`phone: string` - телефон.
-`address: string` - адреc.
+`private payment: TPayment` - вид оплаты, тип оплаты `TPayment` может принимать значения `online` и `cash`, поле доступно только внутри класса.
+`private email: string` - email, поле доступно только внутри класса.
+`private phone: string` - телефон, поле доступно только внутри класса.
+`private address: string` - адреc, поле доступно только внутри класса.
 
 Методы класса:
 `updBuyer(buyer: Partial<IBuyer>): IBuyer` - сохранение данных в модели. Один общий метод, реализована возможность сохранить только одно значение, не удалив при этом значения других полей, которые уже могут храниться в классе.
