@@ -1,6 +1,8 @@
 import { IBuyer } from "../../types";
 import { TPayment } from "../../types";
 
+type ValidationErrors = Partial<Record<keyof IBuyer, string>>;
+
 export class Buyer {
   private payment: TPayment;
   private email: string;
@@ -53,8 +55,8 @@ export class Buyer {
   }
 
   //валидация данных
-  validBuyer(): {payment?: string; email?: string, phone?: string, address?: string} {
-      let err: {payment?: string; email?: string,phone?: string, address?: string} = {};
+  validBuyer(): ValidationErrors {
+      let err: ValidationErrors = {};
 
     if (this.payment != 'online' && this.payment != 'cash') {
       err.payment = 'Не выбран вид оплаты';

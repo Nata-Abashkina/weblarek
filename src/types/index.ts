@@ -30,10 +30,10 @@ export interface IProduct {
   price: number | null;
 }
 
-export type TPayment = 'online' | 'cash' | '';
+export type TPayment = 'online' | 'cash';
 
 export interface IBuyer {
-  payment: TPayment;
+  payment: TPayment | '';
   email: string;
   phone: string;
   address: string;
