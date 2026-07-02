@@ -4,7 +4,7 @@ import { TPayment } from "../../types";
 type ValidationErrors = Partial<Record<keyof IBuyer, string>>;
 
 export class Buyer {
-  private payment: TPayment;
+  private payment: TPayment | '';
   private email: string;
   private phone: string;
   private address: string;

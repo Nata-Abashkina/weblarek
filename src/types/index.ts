@@ -15,8 +15,7 @@ export interface IOrderConfirmation {
   total: number
 }
 
-export interface IOrder {
-  buyer: IBuyer,
+export interface IOrder extends IBuyer {
   total: number,
   items: string[]
 }
@@ -37,4 +36,11 @@ export interface IBuyer {
   email: string;
   phone: string;
   address: string;
+}
+export interface ICardActions {
+  onClick: (event: MouseEvent) => void;
+}
+
+export interface ICardFullData extends IProduct {
+  inBasket?: boolean;
 }
